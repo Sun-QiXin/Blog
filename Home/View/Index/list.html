@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="./Public/Home/Css/public.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="./Public/Home/font/iconfont.css">
+    <title>博文列表页</title>
+</head>
+
+<body>
+<div class="bottombg">
+    <!--项部导航栏-->
+    <div class="topbar">
+        <div class="content">
+            <div class="divL">
+                <i><a href="javascript:void(0)"><span class="iconfont icon-faxian-copy"></span>设为首页</a></i>
+                <a href="javascript:void(0)"><span class="iconfont icon-shoucang"></span>加入收藏</a>
+            </div>
+            <div class="divR">
+                <{if !empty($smarty.session.username)}>
+                <span><span class="iconfont icon-huanyingye"></span>欢迎，<span
+                        style="color:red"><{$smarty.session.username}></span></span>
+                <a href="admin.php"><span class="iconfont icon-houtaiweihu"></span>后台管理</a>
+                <a href="admin.php?c=User&a=logout"><span class="iconfont icon-tuichu1"></span>退出管理</a>
+                <{else}>
+                <span>欢迎光临我的小博客！</span>
+                <a href="admin.php?c=User&a=login">后台登录</a>
+                <{/if}>
+            </div>
+        </div>
+    </div><!--//顶部导航栏-->
+
+    <!--博客背景-->
+    <div class="blogbg">
+        <div class="header">
+            <div class="title">
+                <h2>CodeRecently的博客</h2>
+                <p><a href="javascript:void(0)">http://blog.huaxin.press/index.php</a></p>
+            </div>
+            <div class="menu">
+                <ul>
+                    <li><a href="index.php" class="current">首页</a></li>
+                    <li><a href="index.php?c=Index&a=showList">博文目录</a></li>
+                    <li><a href="javascript:void(0)">图片</a></li>
+                    <li><a href="javascript:void(0)" class="noLine">关于我</a></li>
+                </ul>
+            </div>
+        </div>
+    </div><!--//博客背景-->
+
+    <!--博客主体-->
+    <div class="contains">
+        <!--左边栏-->
+        <div class="left">
+            <div class="toptitle">博文列表</div>
+            <!--博文简介-->
+            <div class="bloglist">
+                <ul>
+                    <{foreach $articles as $article}>
+                    <li><a href="?c=Index&a=content&id=<{$article.id}>"><{$article.title}></a><span>
+				<span class="span1">(<{$article.comment_count}>/<{$article.read}>)</span> 
+				<{$article.addate|date_format:'%Y-%m-%d %H:%M:%S'}></span></li>
+                    <{/foreach}>
+                </ul>
+            </div><!--//博文列表-->
+
+            <!--分页代码-->
+            <div class="pagelist">
+                <{$pageStr}>
+            </div><!--//分页代码-->
+        </div><!--//左边栏-->
+        <!--右边栏-->
+        <div class="right">
+            <!--文章标题搜索-->
+            <div class="search">
+                <div class="title">文章标题搜索</div>
+                <div class="content">
+                    <form name="form1" method="post" action="">
+                        <input class="search" type="text" name="title">
+                        <input type="submit" value="搜索">
+                    </form>
+                </div>
+            </div><!--//文章标题搜索-->
+            <!--文章分类-->
+            <div class="category">
+                <div style="text-align: center" class="title">文章分类</div>
+                <div class="content">
+                    <ul>
+                        <{foreach $categorys as $category}>
+                        <li><a href="?c=Index&a=showList&category_id=<{$category.id}>">
+                            <{str_repeat('--',$category.level*2)}>
+                            <{$category.classname}></a>
+                            (<span style="color: red"><{$category.article_count}></span>)
+                        </li>
+                        <{/foreach}>
+                    </ul>
+                </div>
+            </div><!--//文章分类-->
+            <!--最新评论-->
+            <div class="comment">
+                <div style="text-align: center"  class="title">最新评论</div>
+                <div class="content">
+                    <ul>
+                        <{foreach $showComments as $showComment}>
+                        <{if $showComment@iteration<=4}>
+                        <li>
+                            <div>
+                                <{$showComment.name}><span><{$showComment.addTime|date_format:'%Y-%m-%d %H:%M:%S'}></span>
+                            </div>
+                            <a href="javascript:void(0)"
+                               style=" width:100%;white-space: nowrap;overflow:hidden;display: inline-block;text-overflow: ellipsis">
+                                <{$showComment.content}></a>
+                        </li>
+                        <{/if}>
+                        <{/foreach}>
+                    </ul>
+                </div>
+            </div><!--//最新评论-->
+            <!--文章归档-->
+            <<div class="category-date">
+            <div style="text-align: center"  class="title">文章归档</div>
+            <div class="content">
+                <ul>
+                    <{foreach $months as $month}>
+                    <li><a href="javascript:void(0)"><{$month.yearmonth}></a>
+                        (<span style="color:red;"><{$month.article_count}></span>)
+                    </li>
+                    <{/foreach}>
+                </ul>
+            </div>
+        </div><!--//文章归档-->
+            <!--友情链接-->
+            <div class="links">
+                <div style="text-align: center"  class="title">友情链接</div>
+                <div class="content">
+                    <ul>
+                        <{foreach $links as $link}>
+                        <li><a target="_blank" href="<{$link.url}>"><{$link.domain}></a></li>
+                        <{/foreach}>
+                    </ul>
+                </div>
+            </div><!--//友情链接-->
+        </div><!--//右边栏-->
+        <div class="clear"></div>
+    </div><!--//博客主体-->
+
+    <!--网页底部-->
+    <div class="footer">
+        Copyright&copy 2020年2月13日 SunQiXin 鲁ICP备20005824号<br/>电话：15153869872 邮箱: 15153869872@163.com
+    </div><!--//网页底部-->
+</div>
+</body>
+</html>
