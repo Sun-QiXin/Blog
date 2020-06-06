@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="./Public/Admin/Css/public.css" rel="stylesheet" type="text/css"/>
+    <title>文章分类管理</title>
+    <script type="text/javascript">
+        //定义JS跳转的函数
+        function confirmDel(id) {
+            //询问是否要删除
+            if (window.confirm("你真的要删除吗？")) {
+                location.href = "?c=Category&a=delete&id=" + id;
+            }
+        }
+    </script>
+</head>
+
+<body>
+<table width="100%" border="0" align="center" cellpadding="1" cellspacing="1" class="border">
+    <tr class="topbg">
+        <td>文章分类管理</td>
+    </tr>
+    <tr class="tdbg">
+        <td height="30">&nbsp;&nbsp;
+            <a href="?c=Category&a=index">管理首页</a>&nbsp;|&nbsp;
+            <a href="?c=Category&a=add">添加文章分类</a>
+        </td>
+    </tr>
+</table>
+<br/>
+<table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" class="border">
+    <tr class="title" align="center">
+        <td>编号</td>
+        <td>分类名称</td>
+        <td>排序</td>
+        <td>文章数量</td>
+        <td>操作选项</td>
+    </tr>
+    <{foreach $categorys as $category}>
+    <tr class="tdbg" align="center">
+        <td><{$category.id}></td>
+        <td align="left"><{$category.classname}></td>
+        <td><{$category.orderby}></td>
+        <td>350</td>
+        <td>
+            <a href="?c=Category&a=edit&id=<{$category.id}>">修改</a> |
+            <a href="javascript:void(0)" onClick="confirmDel('<{$category.id}>')">删除</a>
+        </td>
+    </tr>
+    <{/foreach}>
+</table>
+</body>
+</html>

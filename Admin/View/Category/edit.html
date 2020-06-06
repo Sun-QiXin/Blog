@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="./Public/Admin/Css/public.css" type="text/css">
+    <meta charset="utf-8">
+    <title>文章分类管理</title>
+</head>
+
+<body>
+<table width="100%" border="0" align="center" cellpadding="1" cellspacing="1" class="border">
+    <tr class="topbg">
+        <td>文章分类管理</td>
+    </tr>
+    <tr class="tdbg">
+        <td height="30">&nbsp;&nbsp;
+            <a href="#">管理首页</a>&nbsp;|&nbsp;
+            <a href="#">添加文章分类</a>
+        </td>
+    </tr>
+</table>
+<br/>
+<form name="form1" method="post" action="?c=Category&a=update&id=<{$category.id}>">
+    <table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" class="border">
+        <tr class="title">
+            <td colspan="2" align="center">编辑文章分类</td>
+        </tr>
+        <tr class="tdbg">
+            <td width="11%" height="30" align="right">名&nbsp;&nbsp;称：</td>
+            <td width="89%"><input name="classname" value="<{$currentCategory.classname}>" type="text" size="90" maxlength="20"/></td>
+        </tr>
+        <tr class="tdbg">
+            <td height="30" align="right">排&nbsp;&nbsp;序：</td>
+            <td>
+                <input name="orderby" value="<{$currentCategory.orderby}>" type="text" size="5" maxlength="5"/>
+                数值数小，排序越靠前
+            </td>
+        </tr>
+        <tr class="tdbg">
+            <td height="30" align="right">分类：</td>
+            <td>
+                <select name="pid">
+                    <{foreach $categorys as $category}>
+                    <{if $currentCategory.classname==$category.classname}>
+                    <option selected value="<{$category.id}>">
+                        <{$category.classname}>
+                    </option>
+                    <{else}>
+                    <option value="<{$category.id}>">
+                        <{$category.classname}>
+                    </option>
+                    <{/if}>
+                    <{/foreach}>
+                </select>
+            </td>
+        </tr>
+        <tr class="tdbg">
+            <td height="30" align="right">&nbsp;</td>
+            <td>
+                <input type="submit" value="修改"/>
+                <input type="button" onclick="history.go(-1)" value="返回"/>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
