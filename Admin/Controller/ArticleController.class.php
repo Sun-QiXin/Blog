@@ -12,9 +12,7 @@ class ArticleController extends BaseController
 	public function index()
 	{
 		//获取无限级分类数据
-		$categorys = CategoryModel::getInstance()->categoryList(
-			CategoryModel::getInstance()->fetchAll("id ASC")
-		);
+		$categorys = CategoryModel::getInstance()->fetchAll("id ASC");
 
 		//构建搜索条件：$where = "2>1 AND category_id=2 AND title LIKE '%中国%'"
 		$where = "2>1";
@@ -51,9 +49,7 @@ class ArticleController extends BaseController
 	public function add()
 	{
 		//获取无限级分类数据
-		$categorys = CategoryModel::getInstance()->categoryList(
-			CategoryModel::getInstance()->fetchAll("id ASC")
-		);
+		$categorys = CategoryModel::getInstance()->fetchAll("id ASC");
 		//向视图赋值，并显示视图
 		$this->smarty->assign("categorys",$categorys);
 		$this->smarty->display("add.html");
