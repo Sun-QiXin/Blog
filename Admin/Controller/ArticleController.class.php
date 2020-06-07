@@ -18,7 +18,6 @@ class ArticleController extends BaseController
 		$where = "2>1";
 		if(!empty($_REQUEST['category_id'])) $where .= " AND category_id=".$_REQUEST['category_id'];
 		if(!empty($_REQUEST['keyword'])) $where .= " AND title LIKE '%".$_REQUEST['keyword']."%'";
-		echo $where;
 
 		//分页参数
 		$pagesize 	= 5; //每页显示条数

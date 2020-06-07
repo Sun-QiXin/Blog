@@ -193,7 +193,6 @@ class IndexController extends BaseController
             'article' => $article,
             'prevNext' => $prevNext,
             'currentComments' => $currentComments
-
         ));
         $this->smarty->display("content.html");
     }
@@ -249,5 +248,48 @@ class IndexController extends BaseController
             //如果没有登录，跳转到登录页面
             $this->jump("请先登录，才能点赞！", "admin.php?c=User&a=login");
         }
+    }
+
+    //显示个人信息
+    public function showMyMsg()
+    {
+        //(1)获取友情链接、评论数据
+        $links = LinksModel::getInstance()->fetchAll();
+        $comments = CommentModel::getInstance()->fetchAll("addate DESC");
+        //根据用户id查询出用户名，重新封装成数组对象
+        $showComments[][] = [];
+        $count = 0;
+        foreach ($comments as $comment) {
+            $userId = $comment["user_id"];
+            $user = UserModel::getInstance()->fetchOne("id={$userId}");
+            //发表评论的姓名
+            $showComments[$count]["name"] = $user["name"];
+            //发表评论的内容
+            $showComments[$count]["content"] = $comment["content"];
+            //发表评论的时间
+            $showComments[$count]["addTime"] = $comment["addate"];
+            $count++;
+        }
+
+        //(2)获取无限级分类数据
+        $categorys = CategoryModel::getInstance()->categoryList(
+            CategoryModel::getInstance()->fetchAllWithJoin()
+        );
+
+        //(3)获取文章按月份归档数据
+        $months = ArticleModel::getInstance()->fetchAllWithCount();
+
+        //(4)构建搜索的条件
+        $where = "2>1";
+        if (!empty($_GET['category_id'])) $where .= " AND category_id=" . $_GET['category_id'];
+        if (!empty($_REQUEST['keyword'])) $where .= " AND title LIKE '%" . $_REQUEST['keyword'] . "%'";
+        //向视图赋值，并显示视图
+        $this->smarty->assign(array(
+            'links' => $links,
+            'showComments' => $showComments,
+            'categorys' => $categorys,
+            'months' => $months,
+        ));
+        $this->smarty->display("message.html");
     }
 }

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <link href="./Public/Home/Css/public.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="./Public/Home/font/iconfont.css">
-    <title>博文列表页</title>
+    <title>我的信息</title>
 </head>
 
 <body>
@@ -52,22 +52,34 @@
     <div class="contains">
         <!--左边栏-->
         <div class="left">
-            <div class="toptitle">博文列表</div>
-            <!--博文简介-->
-            <div class="bloglist">
-                <ul>
-                    <{foreach $articles as $article}>
-                    <li><a href="?c=Index&a=content&id=<{$article.id}>"><{$article.title}></a><span>
-				<span class="span1">(<{$article.comment_count}>/<{$article.read}>)</span> 
-				<{$article.addate|date_format:'%Y-%m-%d %H:%M:%S'}></span></li>
-                    <{/foreach}>
-                </ul>
-            </div><!--//博文列表-->
+            <div class="toptitle">我的资料</div>
+            <div class="myMsg">
+                <div class="msgRight">
+                    <div class="myImg"></div>
+                    <p><a href="javascript:void(0)">修改头像</a></p>
+                </div>
 
-            <!--分页代码-->
-            <div class="pagelist">
-                <{$pageStr}>
-            </div><!--//分页代码-->
+                <div class="msgLeft">
+                   <div>ID：CodeRecently666</div>
+                   <div>昵称：CodeRecently</div>
+                   <div>姓名：孙启新</div>
+                   <div>性别：男</div>
+                   <div>生日：1999-01-29</div>
+                   <div>职位：学生</div>
+                   <div>公司：无</div>
+                   <div>学校：山东信息职业技术学院</div>
+                   <div>行业：IT互联网</div>
+                   <div>简介：放弃不难，但坚持很酷！</div>
+                </div>
+                <div class="msgLeft" style="color: rgba(0, 148, 50,1.0)">
+                   <div style="font-size: 14px;">应当仔细地观察，为的是理解；应当努力地理解，为的是行动。——罗曼·罗兰</div>
+                   <div style="font-size: 14px;">在一个崇高的目的支持下，不停地工作，即使慢，也一定会获得成功。——爱因斯坦</div>
+                   <div style="font-size: 14px;">如果一个人不知道他要驶向哪头，那么任何风都不是顺风。——塞涅卡</div>
+                   <div style="font-size: 14px;">所有坚韧不拔的努力迟早会取得报酬的。——安格尔</div>
+                   <div style="font-size: 14px;">青春的幻想既狂热又可爱。——约肖特豪斯</div>
+                   <div style="font-size: 14px;">成功毫无技巧可言，我一向只对工作尽力而为而已。——卡耐基</div>
+                </div>
+            </div>
         </div><!--//左边栏-->
         <!--右边栏-->
         <div class="right">
@@ -87,7 +99,7 @@
                 <div class="content">
                     <ul>
                         <{foreach $categorys as $category}>
-                        <li><a href="?c=Index&a=showList&category_id=<{$category.id}>">
+                        <li><a href="?c=Index&a=index&category_id=<{$category.id}>">
                             <{str_repeat('--',$category.level*2)}>
                             <{$category.classname}></a>
                             (<span style="color: red"><{$category.article_count}></span>)
@@ -98,7 +110,7 @@
             </div><!--//文章分类-->
             <!--最新评论-->
             <div class="comment">
-                <div style="text-align: center"  class="title">最新评论</div>
+                <div style="text-align: center" class="title">最新评论</div>
                 <div class="content">
                     <ul>
                         <{foreach $showComments as $showComment}>
@@ -117,21 +129,21 @@
                 </div>
             </div><!--//最新评论-->
             <!--文章归档-->
-            <<div class="category-date">
-            <div style="text-align: center"  class="title">文章归档</div>
-            <div class="content">
-                <ul>
-                    <{foreach $months as $month}>
-                    <li><a href="javascript:void(0)"><{$month.yearmonth}></a>
-                        (<span style="color:red;"><{$month.article_count}></span>)
-                    </li>
-                    <{/foreach}>
-                </ul>
-            </div>
-        </div><!--//文章归档-->
+            <div class="category-date">
+                <div style="text-align: center" class="title">文章归档</div>
+                <div class="content">
+                    <ul>
+                        <{foreach $months as $month}>
+                        <li><a href="javascript:void(0)"><{$month.yearmonth}></a>
+                            (<span style="color:red;"><{$month.article_count}></span>)
+                        </li>
+                        <{/foreach}>
+                    </ul>
+                </div>
+            </div><!--//文章归档-->
             <!--友情链接-->
             <div class="links">
-                <div style="text-align: center"  class="title">友情链接</div>
+                <div style="text-align: center" class="title">友情链接</div>
                 <div class="content">
                     <ul>
                         <{foreach $links as $link}>

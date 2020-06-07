@@ -47,8 +47,8 @@ a:hover {
     min-width: 950px;
     overflow: hidden;
     color: #2E3092;
-	background: rgb(5,181,114);
-	background: linear-gradient(90deg, rgba(5,181,114,1) 0%, rgba(3,153,205,1) 49%, rgba(0,233,255,1) 100%);
+    background: rgb(5, 181, 114);
+    background: linear-gradient(90deg, rgba(5, 181, 114, 1) 0%, rgba(3, 153, 205, 1) 49%, rgba(0, 233, 255, 1) 100%);
 }
 
 .topbar a {
@@ -125,8 +125,11 @@ a:hover {
     width: 250px;
     height: 32px;
     line-height: 32px;
-    background: url("../Images/blognavbg.png") no-repeat;
+    background: rgb(180, 242, 121);
+    background: linear-gradient(110deg, rgba(180, 242, 121, 0) 0%,
+    rgba(123, 166, 232, 1) 45%, rgba(39, 209, 244, 0) 100%);
     margin: 50px 0px 0px 190px;
+    border-radius: 20px;
     font-size: 16px;
     font-family: "宋体";
     padding-left: 5px;
@@ -141,6 +144,10 @@ a:hover {
     border-right: 1px dotted #ccc;
 }
 
+.blogbg .header .menu li a:hover {
+    color: rgba(0, 148, 50, 0.8);
+}
+
 .blogbg .header .menu .noLine {
     border: none;
 }
@@ -148,14 +155,16 @@ a:hover {
 .blogbg .header .menu .current {
     font-weight: bold;
 }
+
 /*下半部分背景*/
-.bottombg{
+.bottombg {
     width: 100%;
     height: 100%;
     overflow: hidden;
     position: relative;
 }
-.bottombg::before{
+
+.bottombg::before {
     position: absolute;
     background: url(../Images/blogbg.jpg);
     background-size: cover;
@@ -219,6 +228,7 @@ a:hover {
 }
 
 .left .block .bottom {
+    font-size: 11px !important;
     height: 60px;
     line-height: 60px;
     border-bottom: 1px dotted #999;
@@ -355,6 +365,7 @@ a:hover {
 .left .comment .ul01 li {
     padding: 5px 0px;
 }
+
 .comment .ul01 {
     height: auto;
     box-sizing: border-box;
@@ -377,6 +388,41 @@ a:hover {
     font-size: 14px;
     height: 30px;
     line-height: 30px;
+}
+
+/*个人信息页*/
+.left .myMsg {
+    padding: 10px;
+    display: flex;
+}
+
+.left .myMsg .msgRight {
+    background: rgb(238, 174, 202);
+    background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 0) 100%);
+    width: 120px;
+    text-align: center;
+}
+
+.left .myMsg .msgRight .myImg {
+    margin-top: 30px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: url("../Images/myimg.jpg") no-repeat center;
+    background-size: cover;
+}
+
+.left .myMsg .msgLeft {
+    width: 100%;
+    background: rgb(63, 94, 251);
+    background: linear-gradient(180deg, rgba(63, 94, 251, 0.0) 0%,
+    rgba(175, 167, 81, 0.5) 53%, rgba(252, 70, 107, 0) 100%);
+    padding: 120px 20px 20px 20px;
+}
+
+.left .myMsg .msgLeft div {
+    font-size: 16px;
+    margin-bottom: 10px;
 }
 
 /**************************************右边栏******************************************/
@@ -407,8 +453,15 @@ a:hover {
     margin-bottom: 10px;
 }
 
+.right .search .content form {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
+
 .right .search .content input[name=keyword] {
-    width: 140px;
+    outline: none;
+    width: 130px;
     border: 1px solid #ccc;
     height: 24px;
     padding-left: 3px;
@@ -422,9 +475,12 @@ a:hover {
 }
 
 .right .search .content input[type=submit] {
-    height: 26px;
-    width: 40px;
-    background-color: #f0f0f0;
+    background: rgb(34, 193, 195);
+    background: linear-gradient(90deg, rgba(34, 193, 195, 0.558158297498687) 0%, rgba(253, 187, 45, 0) 100%);
+    border-radius: 5px;
+    color: #63a35c;
+    height: 24px;
+    width: 50px;
     border: 1px solid #ccc;
     cursor: pointer;
 }
