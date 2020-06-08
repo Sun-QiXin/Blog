@@ -56,7 +56,8 @@ td {
 }
 
 .t4 {
-    color: #0000FF;
+    color: #8e44ad;
+    font-weight: 500;
 }
 
 tr.title {
@@ -135,7 +136,8 @@ tr.title a:hover {
 }
 
 .top .top2 a:hover {
-    color: #444444;
+    color: #008800;
+    font-weight: bold;
 }
 
 /*左侧框架页样式*/
@@ -165,12 +167,84 @@ tr.title a:hover {
     padding-left: 30px;
 }
 
+.left .menu > li > a:hover {
+    color: darkblue;
+}
+
 .left .menu .acitem > li > a {
     color: #000;
     height: 26px;
     line-height: 26px;
-    font-weight: 100;
+    font-weight: 300;
     padding-left: 35px;
     display: block;
     background: url(../Images/menu_bg1.gif) no-repeat;
 }
+
+.left .menu .acitem > li > a:hover {
+    color: #8e44ad;
+}
+
+#commentSearch #commentBtn{
+    font-size: 13px;
+    outline: none;
+    border: 1px solid #ccc;
+    background: rgb(34, 193, 195);
+    background: linear-gradient(90deg, rgba(34, 193, 195, 0.558158297498687) 0%, rgba(253, 187, 45, 0) 100%);
+    border-radius: 5px;
+}
+
+/*模态框展示消息*/
+#showMessage {
+    display: none;
+}
+
+#showMessage #myToast {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 180px;
+    box-shadow: 3px 4px 16px rgba(0, 0, 0, .5);
+    border-radius: 5px;
+}
+
+#showMessage #myToast .toast-header {
+    border-radius: 5px;
+    background-color: white;
+    align-content: space-between;
+    justify-content: space-between;
+    position: relative;
+    display: flex;
+    line-height: 30px;
+}
+
+#showMessage #myToast .toast-header strong {
+    position: absolute;
+    left: 33px;
+    font-size: 13px;
+    color: rgba(0, 0, 0, .4);
+}
+
+#showMessage #myToast .toast-header button {
+    outline: none;
+    border: 0;
+    background-color: white;
+    right: 33px;
+}
+
+#showMessage #myToast .toast-header small {
+    position: absolute;
+    right: 33px;
+}
+
+#showMessage #myToast #tipsMsg {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    text-align: center;
+    background-color: rgba(219, 231, 234, 1);
+}
+
+/*模态框展示消息*/

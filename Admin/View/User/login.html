@@ -5,6 +5,7 @@
     <title>管理员登录</title>
     <link href="./Public/Admin/Css/public.css" rel="stylesheet" type="text/css"/>
     <link href="./Public/Admin/Css/login.css" rel="stylesheet" type="text/css"/>
+    <script src="./Public/Admin/Js/jquery.js"></script>
     <script type="text/javascript">
         //初始设置用户名为当前焦点
         function SetFocus() {
@@ -14,10 +15,26 @@
                 document.form1.username.select();
             }
         }
+
+        //发送ajax请求获取数据，将返回的提示信息封装到模态框中显示
+        function commit() {
+            let data = $("#form1").serialize();
+            $.post("?c=User&a=loginCheck", data, (message) => {
+                $("#tipsMsg").html(JSON.parse(message).msg);
+                $("#showMessage").show(500);
+                setTimeout(() => {
+                    $("#showMessage").hide(600);
+                    //验证通过才能跳转
+                    if (JSON.parse(message).flag){
+                        window.location.href="./admin.php";
+                    }
+                }, 1000)
+            })
+        }
     </script>
 </head>
 <body>
-<form name="form1" method="post" action="?c=User&a=loginCheck" id="form1" onSubmit="return checkForm();">
+<form id="form1" name="form1" method="post" action="?c=User&a=loginCheck" id="form1" onSubmit="return checkForm();">
     <div id="position">
         <div id="inposition">
             <div class="login-left">
@@ -56,7 +73,7 @@
                             <tr>
                                 <td style="height: 30px" align="right"></td>
                                 <td style="height: 30px" class="btns">
-                                    <input type="submit" name="btnLogin" value="登 录" id="btnLogin" class="button"/>
+                                    <input type="button" name="btnLogin" value="登 录" id="btnLogin" class="button" onclick="commit()"/>
                                     <input type="reset" name="btnTest" value="清 除" id="btnTest" class="button"/>
                                 </td>
                             </tr>
@@ -77,6 +94,21 @@
     </div>
     <div class="copy"><img src="./Public/Admin/Images/login-copy.gif"/></div>
 </div>
+<!--  模态对话框-->
+<div id="showMessage"><br>
+    <div id="myToast">
+        <div class="toast-header">
+            <img src="./Public/Admin/Images/huaxin.png" alt="" width="30">
+            <strong>提示</strong>
+            <small>1分钟前</small>
+            <button>&times;</button>
+        </div>
+        <div id="tipsMsg">
+            注册成功！
+        </div>
+    </div>
+</div>
+<!--  模态对话框-->
 </body>
 </html>
 <script language="javascript">

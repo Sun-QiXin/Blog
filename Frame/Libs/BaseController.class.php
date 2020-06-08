@@ -37,7 +37,7 @@ abstract class BaseController
 	//跳转方法
 	protected function jump($message,$url='?',$time=3)
 	{
-		echo "<h2>{$message}</h2>";
+		echo "{$message}";
 		header("refresh:{$time};url={$url}");
 		die();
 	}

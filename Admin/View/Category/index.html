@@ -3,13 +3,21 @@
 <head>
     <meta charset="utf-8">
     <link href="./Public/Admin/Css/public.css" rel="stylesheet" type="text/css"/>
+    <script src="./Public/Admin/Js/jquery.js"></script>
     <title>文章分类管理</title>
     <script type="text/javascript">
         //定义JS跳转的函数
         function confirmDel(id) {
             //询问是否要删除
             if (window.confirm("你真的要删除吗？")) {
-                location.href = "?c=Category&a=delete&id=" + id;
+                $.get("?c=Category&a=delete&id=" + id, (message) => {
+                    $("#tipsMsg").html(message);
+                    $("#showMessage").show(500);
+                    setTimeout(() => {
+                        $("#showMessage").hide(600);
+                        window.location.href = "?c=Category";
+                    }, 1000)
+                })
             }
         }
     </script>
@@ -49,5 +57,21 @@
     </tr>
     <{/foreach}>
 </table>
+
+<!--  模态对话框-->
+<div id="showMessage"><br>
+    <div id="myToast">
+        <div class="toast-header">
+            <img src="./Public/Admin/Images/huaxin.png" alt="" width="30">
+            <strong>提示</strong>
+            <small>1分钟前</small>
+            <button>&times;</button>
+        </div>
+        <div id="tipsMsg">
+            注册成功！
+        </div>
+    </div>
+</div>
+<!--  模态对话框-->
 </body>
 </html>

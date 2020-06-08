@@ -1,46 +1,78 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<link href="./Public/Admin/Css/public.css" rel="stylesheet" type="text/css" />
-<title>文章分类管理</title>
+    <meta charset="utf-8">
+    <link href="./Public/Admin/Css/public.css" rel="stylesheet" type="text/css"/>
+    <script src="./Public/Admin/Js/jquery.js"></script>
+    <title>文章分类管理</title>
+    <script>
+        //发送ajax请求获取数据，将返回的提示信息封装到模态框中显示
+        function commit() {
+            let data = $("#form1").serialize();
+            $.post("?c=Category&a=insert", data, (message) => {
+                $("#tipsMsg").html(message);
+                $("#showMessage").show(500);
+                setTimeout(() => {
+                    $("#showMessage").hide(600);
+                    window.location.href = "?c=Category";
+                }, 1000)
+            })
+        }
+    </script>
 </head>
 
 <body>
 <table width="100%" border="0" align="center" cellpadding="1" cellspacing="1" class="border">
-	<tr class="topbg"><td>文章分类管理</td></tr>
-	<tr class="tdbg">
-		<td height="30">&nbsp;&nbsp;
-			<a href="?c=Category&a=index">管理首页</a>&nbsp;|&nbsp;
-			<a href="?c=Category&a=add">添加文章分类</a>
-		</td>
-	</tr>
+    <tr class="topbg">
+        <td>文章分类管理</td>
+    </tr>
+    <tr class="tdbg">
+        <td height="30">&nbsp;&nbsp;
+            <a href="?c=Category&a=index">管理首页</a>&nbsp;|&nbsp;
+            <a href="?c=Category&a=add">添加文章分类</a>
+        </td>
+    </tr>
 </table>
-<br />
-<form name="form1" method="post" action="?c=Category&a=insert">
-<table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" class="border">
-	<tr class="title">
-		<td colspan="2" align="center">添加文章分类</td>
-	</tr>
-	<tr class="tdbg">
-		<td width="11%" height="30" align="right">名&nbsp;&nbsp;称：</td>
-		<td width="89%"><input name="classname" type="text" size="90" maxlength="50" /></td>
-	</tr>
-	<tr class="tdbg">
-		<td height="30" align="right">排&nbsp;&nbsp;序：</td>
-		<td>
-			<input name="orderby" type="text" value="50" size="5" maxlength="5" /> 
-			数值数小，排序越靠前
-		</td>
-	</tr>
-	<tr class="tdbg">
-		<td height="30" align="right">&nbsp;</td>
-		<td>
-			<input type="submit" value="添加" />
-			<input type="button" onclick="history.go(-1)" value="返回" />
-		</td>
-	</tr>
-</table>
+<br/>
+<form id="form1" name="form1" method="post" action="">
+    <table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" class="border">
+        <tr class="title">
+            <td colspan="2" align="center">添加文章分类</td>
+        </tr>
+        <tr class="tdbg">
+            <td width="11%" height="30" align="right">名&nbsp;&nbsp;称：</td>
+            <td width="89%"><input name="classname" type="text" size="90" maxlength="50"/></td>
+        </tr>
+        <tr class="tdbg">
+            <td height="30" align="right">排&nbsp;&nbsp;序：</td>
+            <td>
+                <input name="orderby" type="text" value="50" size="5" maxlength="5"/>
+                数值数小，排序越靠前
+            </td>
+        </tr>
+        <tr class="tdbg">
+            <td height="30" align="right">&nbsp;</td>
+            <td>
+                <input type="button" value="添加" onclick="commit()"/>
+                <input type="button" onclick="history.go(-1)" value="返回"/>
+            </td>
+        </tr>
+    </table>
 </form>
+<!--  模态对话框-->
+<div id="showMessage"><br>
+    <div id="myToast">
+        <div class="toast-header">
+            <img src="./Public/Admin/Images/huaxin.png" alt="" width="30">
+            <strong>提示</strong>
+            <small>1分钟前</small>
+            <button>&times;</button>
+        </div>
+        <div id="tipsMsg">
+            注册成功！
+        </div>
+    </div>
+</div>
+<!--  模态对话框-->
 </body>
 </html>

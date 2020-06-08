@@ -1,42 +1,76 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<link href="./Public/Admin/Css/public.css" rel="stylesheet" type="text/css" />
-<title>友情链接管理</title>
+    <meta charset="utf-8">
+    <link href="./Public/Admin/Css/public.css" rel="stylesheet" type="text/css"/>
+    <script src="./Public/Admin/Js/jquery.js"></script>
+    <title>友情链接管理</title>
+    <script type="text/javascript">
+        //定义JS跳转的函数
+        function confirmDel(id) {
+            //询问是否要删除
+            if (window.confirm("你真的要删除吗？")) {
+                $.get("?c=Links&a=delete&id=" + id, (message) => {
+                    $("#tipsMsg").html(message);
+                    $("#showMessage").show(500);
+                    setTimeout(() => {
+                        $("#showMessage").hide(600);
+                        window.location.href = "?c=Links";
+                    }, 1000)
+                })
+            }
+        }
+    </script>
 </head>
 
 <body>
 <table width="100%" border="0" align="center" cellpadding="1" cellspacing="1" class="border">
-	<tr class="topbg"><td>友情链接管理</td></tr>
-	<tr class="tdbg">
-		<td height="30">&nbsp;&nbsp;
-			<a href="?c=Links&a=index">管理首页</a>&nbsp;|&nbsp;
-			<a href="?c=Links&a=add">添加友情链接</a>
-		</td>
-	</tr>
+    <tr class="topbg">
+        <td>友情链接管理</td>
+    </tr>
+    <tr class="tdbg">
+        <td height="30">&nbsp;&nbsp;
+            <a href="?c=Links&a=index">管理首页</a>&nbsp;|&nbsp;
+            <a href="?c=Links&a=add">添加友情链接</a>
+        </td>
+    </tr>
 </table>
-<br />
+<br/>
 <table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" class="border">
-<tr class="title" align="center">
-	<td>编号</td>
-	<td>域名</td>
-	<td>网址</td>
-	<td>排序</td>
-	<td>操作选项</td>
-</tr>
-<{foreach $links as $link}>
-<tr class="tdbg" align="center">
-	<td><{$link.id}></td>
-	<td align="left"><{$link.domain}></td>
-	<td><{$link.url}></td>
-	<td><{$link.orderby}></td>
-	<td>
-		<a href="?c=Links&a=edit&id=<{$link.id}>">修改</a> | 
-		<a href="javascript:void(0)">删除</a>
-	</td>
-</tr>
-<{/foreach}>
+    <tr class="title" align="center">
+        <td>编号</td>
+        <td>域名</td>
+        <td>网址</td>
+        <td>排序</td>
+        <td>操作选项</td>
+    </tr>
+    <{foreach $links as $link}>
+    <tr class="tdbg" align="center">
+        <td><{$link@iteration}></td>
+        <td align="left"><{$link.domain}></td>
+        <td><{$link.url}></td>
+        <td><{$link.orderby}></td>
+        <td>
+            <a href="?c=Links&a=edit&id=<{$link.id}>">修改</a> |
+            <a href="javascript:void(0)" onClick="confirmDel('<{$link.id}>')">删除</a>
+        </td>
+    </tr>
+    <{/foreach}>
 </table>
+<!--  模态对话框-->
+<div id="showMessage"><br>
+    <div id="myToast">
+        <div class="toast-header">
+            <img src="./Public/Admin/Images/huaxin.png" alt="" width="30">
+            <strong>提示</strong>
+            <small>1分钟前</small>
+            <button>&times;</button>
+        </div>
+        <div id="tipsMsg">
+            注册成功！
+        </div>
+    </div>
+</div>
+<!--  模态对话框-->
 </body>
 </html>

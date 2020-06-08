@@ -1,72 +1,121 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<link href="./Public/Admin/Css/public.css" rel="stylesheet" type="text/css" />
-<title>文章管理</title>
-<script charset="utf-8" src="./Public/Admin/Js/editor/kindeditor-min.js"></script>
-<script charset="utf-8" src="./Public/Admin/Js/editor/lang/zh_CN.js"></script>
-<script type="text/javascript">
-//引入KindEditor在线编辑器
-var editor;
-KindEditor.ready(function(K) {
-	editor = K.create('textarea[name="content"]', {
-		allowFileManager : true
-	});
-});
-</script>
+    <meta charset="utf-8">
+    <link href="./Public/Admin/Css/public.css" rel="stylesheet" type="text/css"/>
+    <title>文章管理</title>
+    <script charset="utf-8" src="./Public/Admin/Js/editor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="./Public/Admin/Js/editor/lang/zh_CN.js"></script>
+    <script src="./Public/Admin/Js/jquery.js"></script>
+    <script type="text/javascript">
+        //引入KindEditor在线编辑器
+        let editor;
+        let commit;
+        KindEditor.ready(function (K) {
+            editor = K.create('textarea[name="content"]', {
+                allowFileManager: true
+            });
+            //发送ajax请求更新数据
+            commit = function () {
+                const category_id = $("#category_id").val();
+                const title = $("#title").val();
+                const orderby = $("#orderby").val();
+                const top = $(".checkbox").prop("checked") ? 1 : 0;
+                //通过editor拿到textarea中的html文本
+                const content = editor.html();
+
+                //将数据封装成json对象
+                const data = {
+                    "category_id": category_id,
+                    "title": title,
+                    "orderby": orderby,
+                    "top": top,
+                    "content": content,
+                }
+
+                console.log(data);
+                $.post("?c=Article&a=insert", data, (message) => {
+                    console.log(message)
+                    $("#tipsMsg").html(message);
+                    $("#showMessage").show(500);
+                    setTimeout(() => {
+                        window.location.href = "?c=Article";
+                        $("#showMessage").hide(600);
+                    }, 1000)
+                })
+            }
+        });
+    </script>
 </head>
 
 <body>
 <table width="100%" border="0" align="center" cellpadding="1" cellspacing="1" class="border">
-	<tr class="topbg"><td>文章管理</td></tr>
-	<tr class="tdbg">
-		<td height="30">&nbsp;&nbsp;
-			<a href="?c=Article&a=index">管理首页</a>&nbsp;|&nbsp;
-			<a href="?c=Article&a=add">添加文章</a>
-		</td>
-	</tr>
+    <tr class="topbg">
+        <td>文章管理</td>
+    </tr>
+    <tr class="tdbg">
+        <td height="30">&nbsp;&nbsp;
+            <a href="?c=Article&a=index">管理首页</a>&nbsp;|&nbsp;
+            <a href="?c=Article&a=add">添加文章</a>
+        </td>
+    </tr>
 </table>
-<br />
-<form name="form1" method="post" action="?c=Article&a=insert">
-<table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" class="border">
-	<tr class="title"><td colspan="2" align="center">添加文章</td></tr>
-	<tr class="tdbg">
-		<td width="100" height="30" align="right">分&nbsp;&nbsp;类：</td>
-	<td>
-		<select name="category_id">
-			<{foreach $categorys as $category}>
-			<option value="<{$category.id}>">
-				<{$category.classname}>
-			</option>
-			<{/foreach}>
-		</select>
-	</td>
-	</tr>
-	<tr class="tdbg">
-		<td height="30" align="right">标&nbsp;&nbsp;题：</td>
-		<td><input name="title" type="text" size="90" maxlength="50" /></td>
-	</tr>
-	<tr class="tdbg">
-		<td height="30" align="right">排&nbsp;&nbsp;序：</td>
-		<td>
-			<input name="orderby" type="text" value="50" size="2" maxlength="3" />
-			<span style="padding-left:20px;">置顶：</span>
-			<input name="top" type="checkbox" value="1" />
-		</td>
-	</tr>
-	<tr class="tdbg">
-		<td height="30" align="right">内&nbsp;&nbsp;容：</td>
-		<td><textarea name="content" style="width:95%;height:300px;"></textarea></td>
-	</tr>
-	<tr class="tdbg">
-		<td height="30" align="right">&nbsp;</td>
-		<td>
-			<input type="submit" value="添加" />
-			<input type="button" onclick="history.go(-1)" value="返回" />
-		</td>
-	</tr>
-</table>
+<br/>
+<form id="form1" name="form1" method="post" action="">
+    <table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" class="border">
+        <tr class="title">
+            <td colspan="2" align="center">添加文章</td>
+        </tr>
+        <tr class="tdbg">
+            <td width="100" height="30" align="right">分&nbsp;&nbsp;类：</td>
+            <td>
+                <select id="category_id" name="category_id">
+                    <{foreach $categorys as $category}>
+                    <option value="<{$category.id}>">
+                        <{$category.classname}>
+                    </option>
+                    <{/foreach}>
+                </select>
+            </td>
+        </tr>
+        <tr class="tdbg">
+            <td height="30" align="right">标&nbsp;&nbsp;题：</td>
+            <td><input id="title" name="title" type="text" size="90" maxlength="50"/></td>
+        </tr>
+        <tr class="tdbg">
+            <td height="30" align="right">排&nbsp;&nbsp;序：</td>
+            <td>
+                <input id="orderby" name="orderby" type="text" value="50" size="2" maxlength="3"/>
+                <span style="padding-left:20px;">置顶：</span>
+                <input class="checkbox" style="position: relative;top:2.5px" name="top" type="checkbox" value="1"/>
+            </td>
+        </tr>
+        <tr class="tdbg">
+            <td height="30" align="right">内&nbsp;&nbsp;容：</td>
+            <td><textarea name="content" style="width:95%;height:300px;"></textarea></td>
+        </tr>
+        <tr class="tdbg">
+            <td height="30" align="right">&nbsp;</td>
+            <td>
+                <input type="button" value="添加" onclick="commit()"/>
+                <input type="button" onclick="history.go(-1)" value="返回"/>
+            </td>
+        </tr>
+    </table>
 </form>
+<div id="showMessage"><br>
+    <div id="myToast">
+        <div class="toast-header">
+            <img src="./Public/Admin/Images/huaxin.png" alt="" width="30">
+            <strong>提示</strong>
+            <small>1分钟前</small>
+            <button>&times;</button>
+        </div>
+        <div id="tipsMsg">
+            注册成功！
+        </div>
+    </div>
+</div>
+<!--  模态对话框-->
 </body>
 </html>

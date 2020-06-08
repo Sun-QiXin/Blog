@@ -3,7 +3,22 @@
 <head>
     <meta charset="utf-8">
     <link href="./Public/Admin/Css/public.css" rel="stylesheet" type="text/css"/>
+    <script src="./Public/Admin/Js/jquery.js"></script>
     <title>用户管理</title>
+    <script>
+        //发送ajax请求获取数据，将返回的提示信息封装到模态框中显示
+        function commit() {
+            let data = $("#form1").serialize();
+            $.post("?c=User&a=update", data, (message) => {
+                $("#tipsMsg").html(message);
+                $("#showMessage").show(500);
+                setTimeout(() => {
+                    $("#showMessage").hide(600);
+                    window.location.href = "?c=User";
+                }, 1000)
+            })
+        }
+    </script>
 </head>
 
 <body>
@@ -18,45 +33,45 @@
     </tr>
 </table>
 <br/>
-<form id="form1" name="form1" method="post" action="?c=User&a=update">
+<form id="form1" name="form1" method="post" action="">
     <table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" class="border">
         <tr class="title">
             <td colspan="2" align="center">修改用户</td>
         </tr>
         <tr class="tdbg">
             <td width="15%" height="30" align="right">用户名称：</td>
-            <td width="85%"><font color="#0000ff"><{$user.username}></font></td>
+            <td width="85%"><span color="#0000ff"><{$user.username}></span></td>
         </tr>
         <tr class="tdbg">
             <td height="30" align="right">用户密码：</td>
             <td>
                 <input name="password" type="password" size="20" maxlength="15"/>
-                <font color="#FF0000">*</font>
-                <font color="#666666">长度为5-15位（字母、数字），不能含有特殊符号；不修改请留空！</font>
+                <span style="color: #FF0000">*</span>
+                <span style="color: #666666">长度为5-15位（字母、数字），不能含有特殊符号；不修改请留空！</span>
             </td>
         </tr>
         <tr class="tdbg">
             <td height="30" align="right">确认密码：</td>
             <td>
                 <input name="confirmpwd" type="password" maxlength="15"/>
-                <font color="#FF0000">*</font>
-                <font color="#666666">两次输入的密码必须一致；不修改请留空！</font>
+                <span style="color: #FF0000">*</span>
+                <span style="color: #666666">两次输入的密码必须一致；不修改请留空！</span>
             </td>
         </tr>
         <tr class="tdbg">
             <td height="30" align="right">真实姓名：</td>
             <td>
                 <input name="name" type="text" value="<{$user.name}>" size="20"/>
-                <font color="#FF0000">*</font>
-                <font color="#666666">你的姓名</font>
+                <span style="color: #FF0000">*</span>
+                <span style="color: #666666">你的姓名</span>
             </td>
         </tr>
         <tr class="tdbg">
             <td height="30" align="right">联系方式：</td>
             <td>
                 <input name="tel" type="text" value="<{$user.tel}>" size="20"/>
-                <font color="#FF0000">*</font>
-                <font color="#666666">例如：13671181498 或 010-12345678</font>
+                <span style="color: #FF0000">*</span>
+                <span style="color: #666666">例如：13671181498 或 010-12345678</span>
             </td>
         </tr>
         <tr class="tdbg">
@@ -64,11 +79,11 @@
             <td>
                 <{if $user.status==1}>
                 <input type="radio" name="status" value="1" checked/>正常
-                <input type="radio" name="status" value="1"/>停用
+                <input type="radio" name="status" value="0"/>停用
                 <{/if}>
                 <{if $user.status==0}>
                 <input type="radio" name="status" value="1"/>正常
-                <input type="radio" name="status" value="1" checked/>停用
+                <input type="radio" name="status" value="0" checked/>停用
                 <{/if}>
             </td>
         </tr>
@@ -90,12 +105,27 @@
         <tr class="tdbg">
             <td height="30" align="right">&nbsp;</td>
             <td>
-                <input type="submit" value="提交"/>
+                <input type="button" value="提交" onclick="commit()"/>
                 <input type="hidden" name="id" value="<{$user.id}>">
                 <input type="button" onclick="history.go(-1)" value="返回"/>
             </td>
         </tr>
     </table>
 </form>
+<!--  模态对话框-->
+<div id="showMessage"><br>
+    <div id="myToast">
+        <div class="toast-header">
+            <img src="./Public/Admin/Images/huaxin.png" alt="" width="30">
+            <strong>提示</strong>
+            <small>1分钟前</small>
+            <button>&times;</button>
+        </div>
+        <div id="tipsMsg">
+            注册成功！
+        </div>
+    </div>
+</div>
+<!--  模态对话框-->
 </body>
 </html>

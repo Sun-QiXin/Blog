@@ -2,8 +2,23 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="./Public/Admin/Css/public.css" type="text/css">
+    <script src="./Public/Admin/Js/jquery.js"></script>
     <meta charset="utf-8">
     <title>文章分类管理</title>
+    <script>
+        //发送ajax请求获取数据，将返回的提示信息封装到模态框中显示
+        function commit() {
+            let data = $("#form1").serialize();
+            $.post("?c=Category&a=update", data, (message) => {
+                $("#tipsMsg").html(message);
+                $("#showMessage").show(500);
+                setTimeout(() => {
+                    $("#showMessage").hide(600);
+                    window.location.href = "?c=Category";
+                }, 1000)
+            })
+        }
+    </script>
 </head>
 
 <body>
@@ -19,14 +34,15 @@
     </tr>
 </table>
 <br/>
-<form name="form1" method="post" action="?c=Category&a=update&id=<{$category.id}>">
+<form id="form1" name="form1" method="post" action="">
     <table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" class="border">
         <tr class="title">
             <td colspan="2" align="center">编辑文章分类</td>
         </tr>
         <tr class="tdbg">
             <td width="11%" height="30" align="right">名&nbsp;&nbsp;称：</td>
-            <td width="89%"><input name="classname" value="<{$currentCategory.classname}>" type="text" size="90" maxlength="20"/></td>
+            <td width="89%"><input name="classname" value="<{$currentCategory.classname}>" type="text" size="90"
+                                   maxlength="20"/></td>
         </tr>
         <tr class="tdbg">
             <td height="30" align="right">排&nbsp;&nbsp;序：</td>
@@ -36,31 +52,30 @@
             </td>
         </tr>
         <tr class="tdbg">
-            <td height="30" align="right">分类：</td>
-            <td>
-                <select name="pid">
-                    <{foreach $categorys as $category}>
-                    <{if $currentCategory.classname==$category.classname}>
-                    <option selected value="<{$category.id}>">
-                        <{$category.classname}>
-                    </option>
-                    <{else}>
-                    <option value="<{$category.id}>">
-                        <{$category.classname}>
-                    </option>
-                    <{/if}>
-                    <{/foreach}>
-                </select>
-            </td>
-        </tr>
-        <tr class="tdbg">
             <td height="30" align="right">&nbsp;</td>
             <td>
-                <input type="submit" value="修改"/>
+                <input type="hidden" name="id" value="<{$currentCategory.id}>">
+                <input type="button" value="修改" onclick="commit()"/>
                 <input type="button" onclick="history.go(-1)" value="返回"/>
             </td>
         </tr>
     </table>
 </form>
+
+<!--  模态对话框-->
+<div id="showMessage"><br>
+    <div id="myToast">
+        <div class="toast-header">
+            <img src="./Public/Admin/Images/huaxin.png" alt="" width="30">
+            <strong>提示</strong>
+            <small>1分钟前</small>
+            <button>&times;</button>
+        </div>
+        <div id="tipsMsg">
+            注册成功！
+        </div>
+    </div>
+</div>
+<!--  模态对话框-->
 </body>
 </html>

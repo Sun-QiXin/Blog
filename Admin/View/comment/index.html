@@ -4,16 +4,16 @@
     <meta charset="utf-8">
     <link href="./Public/Admin/Css/public.css" rel="stylesheet" type="text/css"/>
     <script src="./Public/Admin/Js/jquery.js"></script>
-    <title>文章管理</title>
+    <title>用户评论管理</title>
     <script>
-        function confirmDel(articleId) {
+        function confirmDel(id) {
             if (confirm("您确定要删除当前文章吗？")) {
-                $.get("?c=Article&a=delete&id=" + articleId, (message) => {
+                $.get("?c=Comment&a=delete&id=" + id, (message) => {
                     $("#tipsMsg").html(message);
                     $("#showMessage").show(500);
                     setTimeout(() => {
-                        window.location.href="?c=Article&a=index";
                         $("#showMessage").hide(600);
+                        window.location.href = "?c=Comment";
                     }, 1000)
                 })
             }
@@ -36,10 +36,10 @@
 </table>
 
 <!--搜索表单-->
-<div id="commentSearch" style="padding:8px 5px;margin:8px 3px;background-color:#fefefe;text-align:center;">
-    <form name="form1" method="post" action="?c=Article&a=index">
+<div id="commentSearch" style="height:24px;line-height:24px;padding:8px 5px;margin:8px 3px;background-color:#fefefe;text-align:center;font-size: 12px">
+    <form name="form1" method="post" action="?c=comment&a=index">
         <span style="padding:0px 5px;">分类</span>
-        <select style="position: relative;height:22px;top:1.4px" name="category_id">
+        <select name="category_id" style="position: relative;height:22px;top:1.4px">
             <option value="">任意</option>
             <{foreach $categorys as $category}>
             <option value="<{$category.id}>">
@@ -58,30 +58,34 @@
     <tr class="title" align="center">
         <td>编号</td>
         <td>分类</td>
-        <td>标题</td>
-        <td>作者</td>
-        <td>发布时间</td>
-        <td>操作选项</td>
+        <td>评论内容</td>
+        <td>评论时间</td>
+        <td>文章标题</td>
+        <td>评论人</td>
+        <td>阅读数</td>
+        <td>点赞数</td>
+        <td>操作</td>
     </tr>
-    <{foreach $articles as $article}>
+    <{foreach $comments as $comment}>
     <tr class="tdbg" align="center">
-        <td><{$article.id}></td>
-        <td><{$article.classname}></td>
-        <td align="left">
-            <a target="_blank" href="#"><{$article.title}></a>
-            <{if $article.top}>[<span style="color: red">顶</span>]<{/if}>
+        <td><{$comment.id}></td>
+        <td><{$comment.classname}></td>
+        <td align="left" style="max-width: 300px;white-space: nowrap; text-overflow:ellipsis;overflow:hidden;">
+            <{$comment.content}>
         </td>
-        <td><{$article.username}></td>
-        <td><{$article.addate|date_format:'%Y-%m-%d %H:%M:%S'}></td>
+        <td><{$comment.addate|date_format:'%Y-%m-%d %H:%M:%S'}></td>
+        <td><{$comment.title}></td>
+        <td><{$comment.name}></td>
+        <td><{$comment.read}></td>
+        <td><{$comment.praise}></td>
         <td>
-            <a href="?c=Article&a=edit&id=<{$article.id}>">修改</a> |
-            <a href="javascript:void(0)" onClick="confirmDel('<{$article.id}>')">删除</a>
+            <a href="javascript:void(0)" onClick="confirmDel('<{$comment.id}>')">删除</a>
         </td>
     </tr>
     <{/foreach}>
     <!--文章分页-->
     <tr class="tdbg">
-        <td colspan="7" align="center"><{$pageStr}></td>
+        <td colspan="9" align="center"><{$pageStr}></td>
     </tr>
 </table>
 <!--  模态对话框-->

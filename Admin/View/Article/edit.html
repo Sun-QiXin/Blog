@@ -1,70 +1,139 @@
 ﻿<!DOCTYPE html>
 <head>
-<meta charset="utf-8">
-<title>文章管理</title>
-<link href="./Public/Admin/Css/public.css" type="text/css" rel="stylesheet" />
-<script charset="utf-8" src="./Public/Admin/Js/editor/kindeditor-min.js"></script>
-<script charset="utf-8" src="./Public/Admin/Js/editor/lang/zh_CN.js"></script>
-<script>
-//引入KindEditor在线编辑器
-let editor;
-KindEditor.ready(function(K) {
-	editor = K.create('textarea[name="content"]', {
-		allowFileManager : true
-	});
-});
-</script>
+    <meta charset="utf-8">
+    <title>文章管理</title>
+    <link href="./Public/Admin/Css/public.css" type="text/css" rel="stylesheet"/>
+    <script charset="utf-8" src="./Public/Admin/Js/editor/kindeditor-min.js"></script>
+    <script charset="utf-8" src="./Public/Admin/Js/editor/lang/zh_CN.js"></script>
+    <script src="./Public/Admin/Js/jquery.js"></script>
+    <script>
+        //引入KindEditor在线编辑器
+        let commit;
+        let editor;
+        KindEditor.ready(function (K) {
+            editor = K.create('textarea[name="content"]', {
+                allowFileManager: true
+            });
+
+            //发送ajax请求更新数据
+            commit = function () {
+                const articleId = $("#articleId").val();
+                const category_id = $("#category_id").val();
+                const title = $("#title").val();
+                const orderby = $("#orderby").val();
+                const top = $(".checkbox").prop("checked") ? 1 : 0;
+                //通过editor拿到textarea中的html文本
+                const content = editor.html();
+
+                //将数据封装成json对象
+                const data = {
+                    'id':articleId,
+                    "category_id": category_id,
+                    "title": title,
+                    "orderby": orderby,
+                    "top": top,
+                    "content": content,
+                }
+
+                console.log(data);
+                $.post("?c=Article&a=update", data, (message) => {
+                    console.log(message)
+                    $("#tipsMsg").html(message);
+                    $("#showMessage").show(500);
+                    setTimeout(() => {
+                        window.location.href = "?c=Article";
+                        $("#showMessage").hide(600);
+                    }, 1000)
+                })
+            }
+        });
+
+
+    </script>
 </head>
 
 <body>
 <table width="100%" border="0" align="center" cellpadding="1" cellspacing="1" class="border">
-	<tr class="topbg"><td>文章管理</td></tr>
-	<tr class="tdbg">
-		<td height="30">&nbsp;&nbsp;
-			<a href="#">管理首页</a>&nbsp;|&nbsp;
-			<a href="#">添加文章</a>
-		</td>
-	</tr>
+    <tr class="topbg">
+        <td>文章管理</td>
+    </tr>
+    <tr class="tdbg">
+        <td height="30">&nbsp;&nbsp;
+            <a href="#">管理首页</a>&nbsp;|&nbsp;
+            <a href="#">添加文章</a>
+        </td>
+    </tr>
 </table>
-<br />
-<form name="form1" method="post" action="">
-<table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" class="border">
-	<tr class="title"><td colspan="6" align="center">修改文章</td></tr>
-	<tr class="tdbg">
-		<td width="17%" height="30" align="right">文章类别：</td>
-		<td>
-			<select name="category_id">
-				<option value="0">无分类</option>
-				<option value="1">----新闻咨询</option>
-				<option value="2">----PHP培训</option>
-			</select>      
-		</td>
-	</tr>
-	<tr class="tdbg">
-		<td height="30" align="right">标&nbsp;&nbsp;题：</td>
-		<td colspan="5"><input name="title" type="text" size="90" maxlength="50" /></td>
-	</tr>
-	<tr class="tdbg">
-		<td height="30" align="right">排&nbsp;&nbsp;序：</td>
-		<td>
-			<input name="orderby" type="text" value="50" size="2" maxlength="3" />
-			<span style="padding-left:20px;">置顶：</span>
-			<input name="top" type="checkbox" value="1" />
-		</td>
-	</tr>
-	<tr class="tdbg">
-		<td height="30" align="right">内&nbsp;&nbsp;容：</td>
-		<td><textarea name="content" style="width:95%;height:300px;"></textarea></td>
-	</tr>
-	<tr class="tdbg">
-		<td height="30" align="right">&nbsp;</td>
-		<td colspan="5">
-			<input type="hidden" name="id" value="" />
-			<input type="submit" value="更新" />
-			<input type="button" onclick="history.go(-1)" value="返回" />
-		</td>
-	</tr>
-</table>
+<br/>
+<form id="form1" name="form1" method="post" action="">
+    <table width="100%" border="0" align="center" cellpadding="3" cellspacing="1" class="border">
+        <tr class="title">
+            <td colspan="6" align="center">修改文章</td>
+        </tr>
+        <tr class="tdbg">
+            <td width="17%" height="30" align="right">文章类别：</td>
+            <td>
+                <select id="category_id" name="category_id">
+                    <{foreach $categorys as $category}>
+                    <{if $articleMsg.classname==$category.classname}>
+                    <option selected value="<{$category.id}>">
+                        <{$category.classname}>
+                    </option>
+                    <{else}>
+                    <option value="<{$category.id}>">
+                        <{$category.classname}>
+                    </option>
+                    <{/if}>
+                    <{/foreach}>
+                </select>
+            </td>
+        </tr>
+        <tr class="tdbg">
+            <td height="30" align="right">标&nbsp;&nbsp;题：</td>
+            <td colspan="5"><input id="title" name="title" type="text" value="<{$articleMsg.title}>" size="90"
+                                   maxlength="50"/>
+            </td>
+        </tr>
+        <tr class="tdbg">
+            <td height="30" align="right">排&nbsp;&nbsp;序：</td>
+            <td>
+                <input name="orderby" id="orderby" type="text" value="<{$articleMsg.orderby}>" size="2" maxlength="3"/>
+                <span style="padding-left:20px;">置顶：</span>
+                <{if $articleMsg.top==1}>
+                <input class="checkbox" name="top" checked type="checkbox" value="1"/>
+                <{else}>
+                <input class="checkbox" name="top" type="checkbox" value="1"/>
+                <{/if}>
+            </td>
+        </tr>
+        <tr class="tdbg">
+            <td height="30" align="right">内&nbsp;&nbsp;容：</td>
+            <td><textarea id="text" name="content" style="width:95%;height:300px;"><{$articleMsg.content}></textarea></td>
+        </tr>
+        <tr class="tdbg">
+            <td height="30" align="right">&nbsp;</td>
+            <td colspan="5">
+                <input type="hidden" id="articleId" name="id" value="<{$articleMsg.id}>"/>
+                <input type="button" onclick="commit()" value="更新"/>
+                <input type="button" onclick="history.go(-1)" value="返回"/>
+            </td>
+        </tr>
+    </table>
 </form>
+<!--  模态对话框-->
+<div id="showMessage"><br>
+    <div id="myToast">
+        <div class="toast-header">
+            <img src="./Public/Admin/Images/huaxin.png" alt="" width="30">
+            <strong>提示</strong>
+            <small>1分钟前</small>
+            <button>&times;</button>
+        </div>
+        <div id="tipsMsg">
+            注册成功！
+        </div>
+    </div>
+</div>
+<!--  模态对话框-->
 </body>
 </html>

@@ -4,7 +4,34 @@
     <meta charset="utf-8">
     <link href="./Public/Home/Css/public.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="./Public/Home/font/iconfont.css">
+    <script src="./Public/Admin/Js/jquery.js"></script>
     <title>博文内容页</title>
+    <script>
+        //发送ajax请求获取评论数据，将返回的提示信息封装到模态框中显示
+        function commit() {
+            let data = $("#form1").serialize();
+            $.post("?c=Index&a=saveComment", data, (message) => {
+                $("#tipsMsg").html(message);
+                $("#showMessage").show(500);
+                setTimeout(() => {
+                    $("#showMessage").hide(600);
+                    location.reload();
+                }, 1000)
+            })
+        }
+
+        //发送ajax请求获取点赞数据，将返回的提示信息封装到模态框中显示
+        function praise(id) {
+            $.get("?c=Index&a=praise&id="+id, (message) => {
+                $("#tipsMsg").html(message);
+                $("#showMessage").show(500);
+                setTimeout(() => {
+                    $("#showMessage").hide(600);
+                    location.reload();
+                }, 1000)
+            })
+        }
+    </script>
 </head>
 
 <body>
@@ -42,7 +69,7 @@
                     <li><a href="index.php" class="current">首页</a></li>
                     <li><a href="index.php?c=Index&a=showList">博文目录</a></li>
                     <li><a href="javascript:void(0)">图片</a></li>
-                    <li><a href="javascript:void(0)" class="noLine">关于我</a></li>
+                    <li><a href="index.php?c=Index&a=showMyMsg" class="noLine">关于我</a></li>
                 </ul>
             </div>
         </div>
@@ -103,7 +130,7 @@
                         作者:<{$article.name}> |
                         分类:<{$article.classname}> |
                         阅读:<{$article.read}> |
-                        <a href="?c=Index&a=praise&id=<{$article.id}>">点赞:<{$article.praise}></a> |
+                        <a href="javascript:void(0)" onclick="praise('<{$article.id}>')">点赞:<{$article.praise}></a> |
                         评论:<{$article.comment_count}>
                     </div>
                 </div>
@@ -150,12 +177,13 @@
                     <{/foreach}>
                 </ul>
                 <!--//主评论内容-->
-                <form style="text-align: center" name="comment" method="post" action="?c=Index&a=saveComment">
+                <form id="form1" style="text-align: center" name="comment" method="post"
+                      action="">
                     <h4>发表评论</h4>
                     <textarea name="content" style="width:95%;height:150px;"></textarea>
                     <input type="hidden" name="article_id" value="<{$article.id}>">
                     <input type="hidden" name="pid" value="0">
-                    <br><input style="width: 60px;" type="submit" value="提交"/>
+                    <br><input style="width: 60px;" type="button" value="提交" onclick="commit()"/>
                 </form>
             </div><!--//评论-->
         </div><!--//左边栏-->
@@ -165,8 +193,8 @@
             <div class="search">
                 <div class="title">文章标题搜索</div>
                 <div class="content">
-                    <form name="form1" method="post" action="">
-                        <input class="search" type="text" name="title">
+                    <form name="form1" method="post" action="?c=Index&a=index">
+                        <input class="search" type="text" name="keyword">
                         <input type="submit" value="搜索">
                     </form>
                 </div>
@@ -240,5 +268,20 @@
         Copyright&copy 2020年2月13日 SunQiXin 鲁ICP备20005824号<br/>电话：15153869872 邮箱: 15153869872@163.com
     </div><!--//网页底部-->
 </div>
+<!--  模态对话框-->
+<div id="showMessage"><br>
+    <div id="myToast">
+        <div class="toast-header">
+            <img src="./Public/Admin/Images/huaxin.png" alt="" width="30">
+            <strong>提示</strong>
+            <small>1分钟前</small>
+            <button>&times;</button>
+        </div>
+        <div id="tipsMsg">
+            注册成功！
+        </div>
+    </div>
+</div>
+<!--  模态对话框-->
 </body>
 </html>
